@@ -51,9 +51,9 @@ class STN(nn.Module):
         x = F.max_pool2d(x,2)
         x = F.relu(self.conv3(x))
         x = F.max_pool2d(x, 2)
-        print("Pre view size:{}".format(x.size()))
+        # print("Pre view size:{}".format(x.size()))
         x = x.view(-1, 32*4*4)
-        print(x.shape)
+        # print(x.shape)
         if self.dropout:
             x = F.dropout(self.fc1(x), p=0.5)
             x = F.dropout(self.fc2(x), p=0.5)

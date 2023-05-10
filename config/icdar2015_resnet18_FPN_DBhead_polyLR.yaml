@@ -52,10 +52,10 @@ dataset:
     dataset:
       args:
         data_path:
-          - ./datasets/train.txt
+          - data/icdar15/train.txt
         img_mode: RGB
     loader:
-      batch_size: 1
+      batch_size: 4
       shuffle: true
       pin_memory: true
       num_workers: 6
@@ -64,7 +64,7 @@ dataset:
     dataset:
       args:
         data_path:
-          - ./datasets/test.txt
+          - data/icdar15/test.txt
         pre_processes:
           - type: ResizeShortSize
             args:
@@ -72,7 +72,7 @@ dataset:
               resize_text_polys: false
         img_mode: RGB
     loader:
-      batch_size: 1
+      batch_size: 4
       shuffle: true
       pin_memory: false
       num_workers: 6

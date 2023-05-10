@@ -46,8 +46,6 @@ class FPN(nn.Module):
         p2 = self._upsample_add(p3, self.reduce_conv_c2(c2))
         p2 = self.smooth_p2(p2)
 
-        print(p2.shape, p3.shape, p4.shape, p5.shape)
-
         x = self._upsample_cat(p2, p3, p4, p5)
         x = self.conv(x)
         return x

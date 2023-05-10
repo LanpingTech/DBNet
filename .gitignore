@@ -9,3 +9,6 @@ __pycache__/
 .idea/
 output/
 test/*.jpg
+
+ori_data/*
+data/*

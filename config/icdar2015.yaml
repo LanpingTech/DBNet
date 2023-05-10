@@ -5,7 +5,7 @@ dataset:
       type: ICDAR2015Dataset # 数据集类型
       args:
         data_path: # 一个存放 img_path \t gt_path的文件
-          - ''
+          - 'data/icdar15/train.txt'
         pre_processes: # 数据的预处理过程，包含augment和标签制作
           - type: IaaAugment # 使用imgaug进行变换
             args:
@@ -37,7 +37,7 @@ dataset:
         filter_keys: [img_path,img_name,text_polys,texts,ignore_tags,shape] # 返回数据之前，从数据字典里删除的key
         ignore_tags: ['*', '###']
     loader:
-      batch_size: 1
+      batch_size: 4
       shuffle: true
       pin_memory: false
       num_workers: 0
@@ -47,7 +47,7 @@ dataset:
       type: ICDAR2015Dataset
       args:
         data_path:
-          - ''
+          - 'data/icdar15/test.txt'
         pre_processes:
           - type: ResizeShortSize
             args:
@@ -64,7 +64,7 @@ dataset:
         filter_keys: []
         ignore_tags: ['*', '###']
     loader:
-      batch_size: 1
+      batch_size: 4
       shuffle: true
       pin_memory: false
       num_workers: 0
