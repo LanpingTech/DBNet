@@ -3,6 +3,7 @@
 # @Author  : zhoujun
 
 from .resnet import *
+from .resnet_cbam import *
 from .resnest import *
 from .shufflenetv2 import *
 from .MobilenetV3 import MobileNetV3
@@ -11,6 +12,8 @@ __all__ = ['build_backbone']
 
 support_backbone = ['resnet18', 'deformable_resnet18', 'deformable_resnet50',
                     'resnet50', 'resnet34', 'resnet101', 'resnet152',
+                    'resnet18_cbam', 'deformable_resnet18_cbam', 'deformable_resnet50_cbam',
+                    'resnet50_cbam', 'resnet34_cbam', 'resnet101_cbam', 'resnet152_cbam',
                     'resnest50', 'resnest101', 'resnest200', 'resnest269',
                     'shufflenet_v2_x0_5', 'shufflenet_v2_x1_0', 'shufflenet_v2_x1_5', 'shufflenet_v2_x2_0',
                     'MobileNetV3']

@@ -4,7 +4,7 @@
 
 import torch
 import torch.nn as nn
-from torchvision.models.utils import load_state_dict_from_url
+import torch.utils.model_zoo as model_zoo
 
 __all__ = [
     'ShuffleNetV2', 'shufflenet_v2_x0_5', 'shufflenet_v2_x1_0',
@@ -138,7 +138,7 @@ def _shufflenetv2(arch, pretrained, progress, *args, **kwargs):
             raise NotImplementedError('pretrained {} is not supported as of now'.format(arch))
         else:
             assert kwargs['in_channels'] == 3, 'in_channels must be 3 whem pretrained is True'
-            state_dict = load_state_dict_from_url(model_url, progress=progress)
+            state_dict = model_zoo.load_url(model_url)
             model.load_state_dict(state_dict, strict=False)
 
     return model
