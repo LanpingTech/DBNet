@@ -1,1 +1,1 @@
-CUDA_VISIBLE_DEVICES=3 python tools/train.py --config_file "config/icdar2015_resnet18_RecFPN_DBhead_polyLR.yaml"
+CUDA_VISIBLE_DEVICES=3 python tools/train.py --config_file "config/icdar2015_dcn_resnet18_cbam_RecFPN_DBhead_polyLR.yaml"
