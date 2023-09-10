@@ -19,7 +19,7 @@ class DepthwiseConvBlock(nn.Module):
         
         
         self.bn = nn.BatchNorm2d(out_channels, momentum=0.9997, eps=4e-5)
-        self.act = nn.ReLU()
+        self.act = nn.LeakyReLU()
         
     def forward(self, inputs):
         x = self.depthwise(inputs)
@@ -36,7 +36,7 @@ class ConvBlock(nn.Module):
         super(ConvBlock,self).__init__()
         self.conv = nn.Conv2d(in_channels, out_channels, kernel_size, stride=stride, padding=padding)
         self.bn = nn.BatchNorm2d(out_channels, momentum=0.9997, eps=4e-5)
-        self.act = nn.ReLU()
+        self.act = nn.LeakyReLU()
 
     def forward(self, inputs):
         x = self.conv(inputs)
@@ -63,9 +63,9 @@ class BiFPNBlock(nn.Module):
         
         # TODO: Init weights
         self.w1 = nn.Parameter(torch.Tensor(2, 4))
-        self.w1_relu = nn.ReLU()
+        self.w1_relu = nn.LeakyReLU()
         self.w2 = nn.Parameter(torch.Tensor(3, 4))
-        self.w2_relu = nn.ReLU()
+        self.w2_relu = nn.LeakyReLU()
     
     def forward(self, inputs):
         p3_x, p4_x, p5_x, p6_x, p7_x = inputs
@@ -77,17 +77,17 @@ class BiFPNBlock(nn.Module):
         w2 /= torch.sum(w2, dim=0) + self.epsilon
         
         p7_td = p7_x
-        p6_td = self.p6_td(w1[0, 0] * p6_x + w1[1, 0] * F.interpolate(p7_td, scale_factor=2))        
-        p5_td = self.p5_td(w1[0, 1] * p5_x + w1[1, 1] * F.interpolate(p6_td, scale_factor=2))
-        p4_td = self.p4_td(w1[0, 2] * p4_x + w1[1, 2] * F.interpolate(p5_td, scale_factor=2))
-        p3_td = self.p3_td(w1[0, 3] * p3_x + w1[1, 3] * F.interpolate(p4_td, scale_factor=2))
+        p6_td = self.p6_td(w1[0, 0] * p6_x + w1[1, 0] * F.interpolate(p7_td, size=p6_x.shape[-2:]))        
+        p5_td = self.p5_td(w1[0, 1] * p5_x + w1[1, 1] * F.interpolate(p6_td, size=p5_x.shape[-2:]))
+        p4_td = self.p4_td(w1[0, 2] * p4_x + w1[1, 2] * F.interpolate(p5_td, size=p4_x.shape[-2:]))
+        p3_td = self.p3_td(w1[0, 3] * p3_x + w1[1, 3] * F.interpolate(p4_td, size=p3_x.shape[-2:]))
         
         # Calculate Bottom-Up Pathway
         p3_out = p3_td
-        p4_out = self.p4_out(w2[0, 0] * p4_x + w2[1, 0] * p4_td + w2[2, 0] * nn.Upsample(scale_factor=0.5)(p3_out))
-        p5_out = self.p5_out(w2[0, 1] * p5_x + w2[1, 1] * p5_td + w2[2, 1] * nn.Upsample(scale_factor=0.5)(p4_out))
-        p6_out = self.p6_out(w2[0, 2] * p6_x + w2[1, 2] * p6_td + w2[2, 2] * nn.Upsample(scale_factor=0.5)(p5_out))
-        p7_out = self.p7_out(w2[0, 3] * p7_x + w2[1, 3] * p7_td + w2[2, 3] * nn.Upsample(scale_factor=0.5)(p6_out))
+        p4_out = self.p4_out(w2[0, 0] * p4_x + w2[1, 0] * p4_td + w2[2, 0] * nn.Upsample(size=p4_x.shape[-2:])(p3_out))
+        p5_out = self.p5_out(w2[0, 1] * p5_x + w2[1, 1] * p5_td + w2[2, 1] * nn.Upsample(size=p5_x.shape[-2:])(p4_out))
+        p6_out = self.p6_out(w2[0, 2] * p6_x + w2[1, 2] * p6_td + w2[2, 2] * nn.Upsample(size=p6_x.shape[-2:])(p5_out))
+        p7_out = self.p7_out(w2[0, 3] * p7_x + w2[1, 3] * p7_td + w2[2, 3] * nn.Upsample(size=p7_x.shape[-2:])(p6_out))
 
         return [p3_out, p4_out, p5_out, p6_out, p7_out]
     
@@ -118,7 +118,7 @@ class BiFPN(nn.Module):
         self.conv = nn.Sequential(
             nn.Conv2d(self.out_channels, self.out_channels, kernel_size=3, padding=1, stride=1),
             nn.BatchNorm2d(self.out_channels),
-            nn.ReLU(inplace=inplace)
+            nn.LeakyReLU()
         )
     
     def forward(self, inputs):

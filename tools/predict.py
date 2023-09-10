@@ -122,7 +122,7 @@ def init_args():
     parser.add_argument('--thre', default=0.3,type=float, help='the thresh of post_processing')
     parser.add_argument('--polygon', action='store_true', help='output polygon or box')
     parser.add_argument('--show', action='store_true', help='show result')
-    parser.add_argument('--save_resut', action='store_true', help='save box and score to txt file')
+    parser.add_argument('--save_result', action='store_true', help='save box and score to txt file')
     args = parser.parse_args()
     return args
 

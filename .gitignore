@@ -12,3 +12,4 @@ test/*.jpg
 
 ori_data/*
 data/*
+pred_outs/*
